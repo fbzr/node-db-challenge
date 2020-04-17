@@ -39,4 +39,15 @@ router.get('/:id/tasks', async (req, res, next) => {
     }
 });
 
+// @route   GET /api/projects/:id
+// @desc    Return a specific project with all its information
+router.get('/:id', async (req, res, next) => {
+    try {
+        const project = await projectsDb.getByIdAllInfo(req.params.id);
+        res.json(project);
+    } catch(err) {
+        next(err);
+    }
+});
+
 module.exports = router;

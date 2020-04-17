@@ -50,11 +50,22 @@ const getByIdAllInfo = async id => {
     } 
 }
 
+const remove = id => {
+    return db('projects').where({id}).del();
+}
+
+const update = async (id, changes) => {
+    const count = await db('projects').where({id}).update(changes);
+    return count ? getById(id) : null;
+}
+
 module.exports = {
     getAll,
     getById,
     add,
     getTasks,
     addTask,
-    getByIdAllInfo
+    getByIdAllInfo,
+    remove,
+    update
 }

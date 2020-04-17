@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const project = await projectsDb.add(req.body);
-        res.json(project);
+        res.status(201).json(project);
     } catch(err) {
         next(err);
     }
@@ -44,7 +44,7 @@ router.get('/:id/tasks', async (req, res, next) => {
 router.post('/:id/tasks', async (req, res, next) => {
     try {
         const task = await projectsDb.addTask(req.params.id, req.body);
-        res.json(task);
+        res.status(201).json(task);
     } catch(err) {
         next(err);
     }
@@ -55,6 +55,30 @@ router.post('/:id/tasks', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const project = await projectsDb.getByIdAllInfo(req.params.id);
+        res.json(project);
+    } catch(err) {
+        next(err);
+    }
+});
+
+// @route   DELETE /api/projects/:id
+// @desc    Delete a project
+router.delete('/:id', async (req, res, next) => {
+    try {
+        await projectsDb.remove(req.params.id);
+        res.json({
+            message: 'Project successfully removed'
+        });
+    } catch(err) {
+        next(err);
+    }
+});
+
+// @route   PUT /api/projects/:id
+// @desc    Update a project
+router.put('/:id', async (req, res, next) => {
+    try {
+        const project = await projectsDb.update(req.params.id, req.body);
         res.json(project);
     } catch(err) {
         next(err);

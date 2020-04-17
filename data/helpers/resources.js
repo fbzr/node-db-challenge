@@ -9,8 +9,19 @@ const add = async resource => {
     return getById(id);
 }
 
+const remove = id => {
+    return db('resources').where({id}).del();
+}
+
+const update = async (id, changes) => {
+    const count = await db('resources').where({id}).update(changes);
+    return count ? getById(id) : null;
+}
+
 module.exports = {
     getAll,
     getById,
-    add
+    add,
+    remove,
+    update
 }

@@ -39,6 +39,17 @@ router.get('/:id/tasks', async (req, res, next) => {
     }
 });
 
+// @route   POST /api/projects/:id/tasks
+// @desc    Add new task to a project
+router.post('/:id/tasks', async (req, res, next) => {
+    try {
+        const task = await projectsDb.addTask(req.params.id, req.body);
+        res.json(task);
+    } catch(err) {
+        next(err);
+    }
+});
+
 // @route   GET /api/projects/:id
 // @desc    Return a specific project with all its information
 router.get('/:id', async (req, res, next) => {

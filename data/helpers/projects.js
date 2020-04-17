@@ -28,6 +28,11 @@ const getTasks = async id => {
     }));
 }
 
+const addTask = async (project_id, task) => {
+    const [id] = await db('tasks').insert({ ...task, project_id }, 'id');
+    return db('tasks').where({id}).first();
+}
+
 const getByIdAllInfo = async id => {
     let tasks = await db('tasks').where({project_id: id}).select('id', 'description', 'notes', 'completed');
     tasks = tasks.map(task => ({
@@ -36,7 +41,7 @@ const getByIdAllInfo = async id => {
     }));
     const resources = await db('resources')
         .join('projects_resources', 'resources.id', 'projects_resources.resource_id')
-        .where('projects_resources.project_id', 2)
+        .where('projects_resources.project_id', id)
         .select('resources.id', 'resources.name', 'resources.description');
     return {
         ... await getById(id),
@@ -50,5 +55,6 @@ module.exports = {
     getById,
     add,
     getTasks,
+    addTask,
     getByIdAllInfo
 }
